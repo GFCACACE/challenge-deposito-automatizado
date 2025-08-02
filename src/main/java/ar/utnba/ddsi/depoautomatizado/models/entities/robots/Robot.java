@@ -16,4 +16,20 @@ public abstract class Robot {
         this.id = id;
         this.disponible = true;
     }
+
+    public void avanzar() {
+        //TODO: implementar
+    }
+    public void girar() {
+        //TODO: implementar
+    }
+
+    public void recogerPaquete() {
+        //TODO: implementar
+    }
+
+    public void dejarPaquete() {
+        //TODO: implementar
+    }
+
 } 

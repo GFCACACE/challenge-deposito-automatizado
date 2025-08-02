@@ -1,0 +1,141 @@
+@startuml
+
+'Pedidos'
+class Pedido {
+    + id: String
+    + mercaderias: List<Mercaderia>
+    + completado: boolean
+    --
+    + recogerMercaderiaPor(Robot robot): void
+}
+
+Pedido --> Mercaderia
+Pedido ..> Robot
+
+'Mercaderias'
+class Mercaderia {
+    + id: String
+    + descripcion: String
+    + compartimiento: Compartimiento
+    --
+    + serRecogidaPor(Robot robot): void
+}
+
+class Compartimiento {
+    + id: String
+    + recorrido: Recorrido
+    + posicion: Posicion
+}
+
+class Posicion {
+    + x: int
+    + y: int
+    + z: int
+}
+
+
+'Recorridos'
+class Recorrido {
+    + comandos: List<ICommand>
+    --
+    + ejecutarRecorrido(robot: Robot)
+}
+
+interface ICommand {
+    + ejecutar(robot: Robot)
+}
+
+class Avanzar implements ICommand {
+    + distancia: int
+    --
+    + ejecutar(robot: Robot)
+}
+
+class Girar implements ICommand {
+    + angulo: int
+    --
+    + ejecutar(robot: Robot)
+}
+
+class RecogerPaquete implements ICommand {
+    + ejecutar(robot: Robot)
+}
+
+class DejarPaquete implements ICommand {
+    + ejecutar(robot: Robot)
+}
+
+class ConfiguradorDeRecorrido {
+    + configurarRecorrido(recorrido: Recorrido, comandos: List<ICommand>): void
+}
+
+Avanzar --> Robot
+Girar --> Robot
+RecogerPaquete --> Robot
+DejarPaquete --> Robot
+
+Recorrido -> ICommand
+Mercaderia --> Compartimiento
+Compartimiento --> Posicion
+Compartimiento --> Recorrido
+ConfiguradorDeRecorrido ..> Recorrido
+ConfiguradorDeRecorrido ..> ICommand
+
+'Robots'
+abstract class Robot {
+    # id: Long
+    # disponible: boolean
+    # estrategiaObstaculo: EstrategiaObstaculo
+    --
+    + avanzar(): void
+    + girar(): void
+    + recogerPaquete(): void
+    + dejarPaquete(): void
+}
+
+class Clark extends Robot {
+    # id: Long
+    # disponible: boolean
+    # estrategiaObstaculo: EstrategiaObstaculo
+    --
+    + avanzar(): void
+    + girar(): void
+    + recogerPaquete(): void
+    + dejarPaquete(): void
+}
+
+class Drone extends Robot {
+    # id: Long
+    # disponible: boolean
+    # estrategiaObstaculo: EstrategiaObstaculo
+    --
+    + avanzar(): void
+    + girar(): void
+    + recogerPaquete(): void
+    + dejarPaquete(): void
+}
+
+interface EstrategiaObstaculo {
+    + manejarObstaculo(robot: Robot)
+}
+
+class EsperarYReintentarStrategy implements EstrategiaObstaculo {
+    + manejarObstaculo(robot: Robot)
+}
+
+class EsquivarObstaculoStrategy implements EstrategiaObstaculo {
+    + manejarObstaculo(robot: Robot)
+}
+
+class VolverInicioStrategy implements EstrategiaObstaculo {
+    + manejarObstaculo(robot: Robot)
+}
+
+class LlamarMantenimientoStrategy implements EstrategiaObstaculo {
+    + manejarObstaculo(robot: Robot)
+}
+
+Robot -> EstrategiaObstaculo
+Recorrido ..> Robot
+
+@enduml
